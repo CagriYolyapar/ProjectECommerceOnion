@@ -4,6 +4,7 @@ using Project.DOMAIN.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,11 +23,18 @@ namespace Project.APPLICATION.ServiceInterfaces
         //BL for Modification Commands
         Task CreateAsync(T entity);
         Task CreateRangeAsync(List<T> list);
-        Task DeleteAsync(T entity);
-        Task DeleteRangeAsync(List<T> list);
+        Task MakePassive(T entity);
+        
         Task UpdateAsync(T entity);
         Task UpdateRangeAsync(List<T> list);
-        Task DestroyAsync(T entity);
-        Task DestroyRangeAsync(T entity);
+        Task RemoveAsync(T entity);
+        Task RemoveRangeAsync(T entity);
+
+       
+
+
+
+        //ICategoryManager<CategoryDto,Category>
+        //IProductManager<ProductDto,Product>
     }
 }

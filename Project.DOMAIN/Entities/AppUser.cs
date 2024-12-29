@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Project.DOMAIN.Entities
 {
-    public class AppUser:BaseEntity
+    public class AppUser: BaseEntity
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+      
+        public string UserName { get; set; }
+        public string Password { get; set; }
+     
 
         //Relational Properties
         public virtual ICollection<Order> Orders { get; set; }
-
+        public virtual AppUserProfile AppUserProfile { get; set; }
 
 
         //AppUser.Orders

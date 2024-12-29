@@ -8,5 +8,7 @@ namespace Project.APPLICATION.DTOClasses
 {
     public class OrderDetailDTO:BaseDTO
     {
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
     }
 }

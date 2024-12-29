@@ -12,10 +12,10 @@ namespace Project.Contract.RepositoryInterfaces
     {
         //List Commands
 
-        Task<IQueryable<T>> GetAllAsync();
-        Task<IQueryable<T>> GetActivesAsync();
-        Task<IQueryable<T>> GetPassivesAsync();
-        Task<IQueryable<T>> GetModifiedsAsync();
+        Task<List<T>> GetAllAsync();
+        IQueryable<T> GetActivesAsync();
+        IQueryable<T> GetPassivesAsync();
+        IQueryable<T> GetModifiedsAsync();
         T GetById(int id);
 
         //Modification Commands
@@ -23,11 +23,11 @@ namespace Project.Contract.RepositoryInterfaces
         Task CreateRangeAsync(List<T> list);
         Task DeleteAsync(T entity);
         Task DeleteRangeAsync(List<T> list);
-        Task UpdateAsync(T entity);
-        Task UpdateRangeAsync(List<T> list);
-        Task DestroyAsync(T entity);
-        Task DestroyRangeAsync(T entity);
+        Task UpdateAsync(T originaleEntity,T newEntity);
         
+      
+        
+      
        
     }
 }
