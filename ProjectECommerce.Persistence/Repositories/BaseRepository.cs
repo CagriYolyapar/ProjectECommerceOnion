@@ -13,7 +13,7 @@ namespace ProjectECommerce.Persistence.Repositories
     public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntity
     {
         readonly MyContext _context;
-
+     
         protected BaseRepository(MyContext context)
         {
             _context = context;
@@ -46,7 +46,7 @@ namespace ProjectECommerce.Persistence.Repositories
 
    
 
-        public IQueryable<T> GetActivesAsync()
+        public IQueryable<T> GetActives()
         {
             return _context.Set<T>().Where(x => x.Status != Project.DOMAIN.Enums.DataStatus.Deleted);
         }
@@ -61,12 +61,12 @@ namespace ProjectECommerce.Persistence.Repositories
             return _context.Set<T>().Find(id);
         }
 
-        public IQueryable<T> GetModifiedsAsync()
+        public IQueryable<T> GetModifieds()
         {
             return _context.Set<T>().Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Updated);
         }
 
-        public IQueryable<T> GetPassivesAsync()
+        public IQueryable<T> GetPassives()
         {
             return _context.Set<T>().Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Deleted);
         }

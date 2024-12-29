@@ -13,9 +13,9 @@ namespace Project.Contract.RepositoryInterfaces
         //List Commands
 
         Task<List<T>> GetAllAsync();
-        IQueryable<T> GetActivesAsync();
-        IQueryable<T> GetPassivesAsync();
-        IQueryable<T> GetModifiedsAsync();
+        IQueryable<T> GetActives();
+        IQueryable<T> GetPassives();
+        IQueryable<T> GetModifieds();
         T GetById(int id);
 
         //Modification Commands

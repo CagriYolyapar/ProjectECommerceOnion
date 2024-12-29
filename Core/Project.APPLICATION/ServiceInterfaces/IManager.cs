@@ -10,27 +10,27 @@ using System.Threading.Tasks;
 
 namespace Project.APPLICATION.ServiceInterfaces
 {
-    public interface IManager<T,U> where T: class,IDTO where U:class,IEntity
+    public interface IManager<T, U> where T : class, IDTO where U : class, IEntity
     {
 
         //BL for List Comands
 
         Task<List<T>> GetAllAsync();
-        Task<List<T>> GetActivesAsync();
-        Task<List<T>> GetPassivesAsync();
-        Task<List<T>> GetModifiedsAsync();
+        List<T> GetActives();
+        List<T> GetPassives();
+        List<T> GetModifieds();
 
         //BL for Modification Commands
         Task CreateAsync(T entity);
         Task CreateRangeAsync(List<T> list);
         Task MakePassive(T entity);
-        
+
         Task UpdateAsync(T entity);
         Task UpdateRangeAsync(List<T> list);
         Task RemoveAsync(T entity);
         Task RemoveRangeAsync(T entity);
 
-       
+
 
 
 
