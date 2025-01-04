@@ -3,6 +3,8 @@ using Project.APPLICATION.DTOInterfaces;
 using Project.APPLICATION.ServiceInterfaces;
 using Project.Contract.RepositoryInterfaces;
 using Project.DOMAIN.Interfaces;
+using ProjectECommerce.Persistence.ContextClasses;
+using ProjectECommerce.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,14 @@ namespace ProjectECommerce.InnerInfrastructure.Services
         readonly IRepository<U> _repository;
         readonly IMapper _mapper;
 
+     
+
+
         public BaseManager(IRepository<U> repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
+
         }
         public async Task CreateAsync(T entity)
         {
@@ -42,50 +48,79 @@ namespace ProjectECommerce.InnerInfrastructure.Services
             //await _repository.CreateRangeAsync(domainEntityList);
         }
 
-        public  List<T> GetActives()
+        public List<T> GetActives()
         {
-            IQueryable<U> activeEntities =  _repository.GetActives();
-            return _mapper.Map<IQueryable<T>>(activeEntities).ToList();
+            IQueryable<U> values = _repository.Where(x => x.Status != Project.DOMAIN.Enums.DataStatus.Deleted);
+            List<U> valueList = values.ToList();
+            return _mapper.Map<List<T>>(valueList);
+
         }
 
-        public Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            List<U> values = await _repository.GetAllAsync();
+            return _mapper.Map<List<T>>(values);
         }
 
         public List<T> GetModifieds()
         {
-            throw new NotImplementedException();
+            IQueryable<U> values = _repository.Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Updated);
+            List<U> valueList = values.ToList();
+            return _mapper.Map<List<T>>(valueList);
         }
 
         public List<T> GetPassives()
         {
-            throw new NotImplementedException();
+            IQueryable<U> values = _repository.Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Deleted);
+            List<U> valueList = values.ToList();
+            return _mapper.Map<List<T>>(valueList);
         }
 
-        public Task MakePassive(T entity)
+        public async Task MakePassive(T entity)
         {
-            throw new NotImplementedException();
+            entity.DeletedDate = DateTime.Now;
+            entity.Status = Project.DOMAIN.Enums.DataStatus.Deleted;
+            U newValue = _mapper.Map<U>(entity);
+            U originalValue = await _repository.GetByIdAsync(newValue.Id);
+            await _repository.UpdateAsync(originalValue, newValue);
         }
 
-        public Task RemoveAsync(T entity)
+        public async Task<string> RemoveAsync(T entity)
         {
-            throw new NotImplementedException();
+            //ONce silinmek istenen verinin pasife cekilip cekilmedigini kontrol edicem .. Eger pasife cekilmişse silicem...
+            if (entity.Status != Project.DOMAIN.Enums.DataStatus.Deleted)
+            {
+                return "Silme işlemi sadece pasif veriler üzerinden yapılabilir";
+            }
+
+            await _repository.DeleteAsync(_mapper.Map<U>(entity));
+            return $"Silme işlemi basarıyla gerçekleştirildi...Silinen id : {entity.Id}";
         }
 
-        public Task RemoveRangeAsync(T entity)
+        public async Task<string> RemoveRangeAsync(List<T> list)
         {
-            throw new NotImplementedException();
+            if (list.Any(x => x.Status != Project.DOMAIN.Enums.DataStatus.Deleted))
+            {
+                return "Listenizde statüsü pasif olmayan bir eleman vardır...Lütfen düzenleyerek tekrar deneyiniz..";
+            }
+
+            await _repository.DeleteRangeAsync(_mapper.Map<List<U>>(list));
+            return "Liste olarak silme işlemi basarılıdır";
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            entity.ModifiedDate = DateTime.Now;
+            entity.Status = Project.DOMAIN.Enums.DataStatus.Updated;
+            U newValue = _mapper.Map<U>(entity);
+            U originalValue = await _repository.GetByIdAsync(newValue.Id);
+            await _repository.UpdateAsync(originalValue, newValue);
         }
 
-        public Task UpdateRangeAsync(List<T> list)
+        public async Task UpdateRangeAsync(List<T> list)
         {
-            throw new NotImplementedException();
+            foreach (T item in list) await UpdateAsync(item);
+            
         }
     }
 }

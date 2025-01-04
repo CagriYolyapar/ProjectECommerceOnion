@@ -27,8 +27,8 @@ namespace Project.APPLICATION.ServiceInterfaces
 
         Task UpdateAsync(T entity);
         Task UpdateRangeAsync(List<T> list);
-        Task RemoveAsync(T entity);
-        Task RemoveRangeAsync(T entity);
+        Task<string> RemoveAsync(T entity);
+        Task<string> RemoveRangeAsync(List<T> list);
 
 
 

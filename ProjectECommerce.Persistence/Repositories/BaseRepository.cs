@@ -5,6 +5,7 @@ using ProjectECommerce.Persistence.ContextClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,30 +47,21 @@ namespace ProjectECommerce.Persistence.Repositories
 
    
 
-        public IQueryable<T> GetActives()
-        {
-            return _context.Set<T>().Where(x => x.Status != Project.DOMAIN.Enums.DataStatus.Deleted);
-        }
+     
 
         public async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public IQueryable<T> GetModifieds()
-        {
-            return _context.Set<T>().Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Updated);
-        }
+     
 
-        public IQueryable<T> GetPassives()
-        {
-            return _context.Set<T>().Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Deleted);
-        }
+      
 
         public async Task UpdateAsync(T originalEntity,T newEntity)
         {
@@ -77,6 +69,9 @@ namespace ProjectECommerce.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
-       
+        public IQueryable<T> Where(Expression<Func<T, bool>> exp)
+        {
+            return _context.Set<T>().Where(exp);
+        }
     }
 }

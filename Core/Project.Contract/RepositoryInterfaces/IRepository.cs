@@ -13,10 +13,10 @@ namespace Project.Contract.RepositoryInterfaces
         //List Commands
 
         Task<List<T>> GetAllAsync();
-        IQueryable<T> GetActives();
-        IQueryable<T> GetPassives();
-        IQueryable<T> GetModifieds();
-        T GetById(int id);
+      
+        Task<T> GetByIdAsync(int id);
+
+        IQueryable<T> Where(Expression<Func<T, bool>> exp);   
 
         //Modification Commands
         Task CreateAsync(T entity);
