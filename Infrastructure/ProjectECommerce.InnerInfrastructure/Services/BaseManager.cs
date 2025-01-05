@@ -8,6 +8,7 @@ using ProjectECommerce.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace ProjectECommerce.InnerInfrastructure.Services
         readonly IRepository<U> _repository;
         readonly IMapper _mapper;
 
-     
+
 
 
         public BaseManager(IRepository<U> repository, IMapper mapper)
@@ -62,6 +63,13 @@ namespace ProjectECommerce.InnerInfrastructure.Services
             return _mapper.Map<List<T>>(values);
         }
 
+        public async Task<T> GetByIdAsync(int id)
+        {
+            U value = await _repository.GetByIdAsync(id);
+
+            return _mapper.Map<T>(value);
+        }
+
         public List<T> GetModifieds()
         {
             IQueryable<U> values = _repository.Where(x => x.Status == Project.DOMAIN.Enums.DataStatus.Updated);
@@ -76,7 +84,7 @@ namespace ProjectECommerce.InnerInfrastructure.Services
             return _mapper.Map<List<T>>(valueList);
         }
 
-        public async Task MakePassive(T entity)
+        public async Task MakePassiveAsync(T entity)
         {
             entity.DeletedDate = DateTime.Now;
             entity.Status = Project.DOMAIN.Enums.DataStatus.Deleted;
@@ -92,8 +100,8 @@ namespace ProjectECommerce.InnerInfrastructure.Services
             {
                 return "Silme işlemi sadece pasif veriler üzerinden yapılabilir";
             }
-
-            await _repository.DeleteAsync(_mapper.Map<U>(entity));
+            U originalValue = await _repository.GetByIdAsync(entity.Id);
+            await _repository.DeleteAsync(originalValue);
             return $"Silme işlemi basarıyla gerçekleştirildi...Silinen id : {entity.Id}";
         }
 
@@ -120,7 +128,7 @@ namespace ProjectECommerce.InnerInfrastructure.Services
         public async Task UpdateRangeAsync(List<T> list)
         {
             foreach (T item in list) await UpdateAsync(item);
-            
+
         }
     }
 }

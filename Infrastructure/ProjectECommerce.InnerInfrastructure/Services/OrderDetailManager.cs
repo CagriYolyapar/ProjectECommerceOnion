@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace ProjectECommerce.InnerInfrastructure.Services
 {
-    public class CategoryManager : BaseManager<CategoryDTO,Category>,ICategoryManager
+    public class OrderDetailManager : BaseManager<OrderDetailDTO,OrderDetail>,IOrderDetailManager
     {
-        ICategoryRepository _catRep;
+        IOrderDetailRepository _odRep;
         IMapper _mapper;
-        public CategoryManager(ICategoryRepository catRepository,IMapper mapper):base(catRepository,mapper)
+        public OrderDetailManager(IOrderDetailRepository odRep, IMapper mapper):base(odRep, mapper) 
         {
-            _catRep = catRepository;
+            _odRep = odRep;
             _mapper = mapper;
         }
     }

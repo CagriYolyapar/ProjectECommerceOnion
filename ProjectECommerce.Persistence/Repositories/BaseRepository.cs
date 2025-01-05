@@ -61,8 +61,6 @@ namespace ProjectECommerce.Persistence.Repositories
 
      
 
-      
-
         public async Task UpdateAsync(T originalEntity,T newEntity)
         {
             _context.Entry(originalEntity).CurrentValues.SetValues(newEntity);

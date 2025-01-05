@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.APPLICATION.ServiceInterfaces
 {
-    public interface IProductManager:IManager<ProductDTO,Product>
+    public interface IAppUserProfileManager : IManager<AppUserProfileDto,AppUserProfile>
     {
-        Task<string> CreateSpecialProduct(ProductDTO productDto);
     }
 }

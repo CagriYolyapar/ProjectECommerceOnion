@@ -19,11 +19,12 @@ namespace Project.APPLICATION.ServiceInterfaces
         List<T> GetActives();
         List<T> GetPassives();
         List<T> GetModifieds();
+        Task<T> GetByIdAsync(int id);
 
         //BL for Modification Commands
         Task CreateAsync(T entity);
         Task CreateRangeAsync(List<T> list);
-        Task MakePassive(T entity);
+        Task MakePassiveAsync(T entity);
 
         Task UpdateAsync(T entity);
         Task UpdateRangeAsync(List<T> list);

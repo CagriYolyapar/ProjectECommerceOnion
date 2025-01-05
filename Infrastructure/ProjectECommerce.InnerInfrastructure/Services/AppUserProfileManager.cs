@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace ProjectECommerce.InnerInfrastructure.Services
 {
-    public class CategoryManager : BaseManager<CategoryDTO,Category>,ICategoryManager
+    public class AppUserProfileManager : BaseManager<AppUserProfileDto,AppUserProfile>,IAppUserProfileManager
     {
-        ICategoryRepository _catRep;
+        IAppUserProfileRepository _appProRep;
         IMapper _mapper;
-        public CategoryManager(ICategoryRepository catRepository,IMapper mapper):base(catRepository,mapper)
+        public AppUserProfileManager(IAppUserProfileRepository appProRep,IMapper mapper):base(appProRep,mapper) 
         {
-            _catRep = catRepository;
+            _appProRep = appProRep;
             _mapper = mapper;
         }
     }
