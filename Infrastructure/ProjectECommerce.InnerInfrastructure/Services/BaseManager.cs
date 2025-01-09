@@ -101,6 +101,8 @@ namespace ProjectECommerce.InnerInfrastructure.Services
                 return "Silme işlemi sadece pasif veriler üzerinden yapılabilir";
             }
             U originalValue = await _repository.GetByIdAsync(entity.Id);
+
+            //U originalValue = _mapper.Map<U>(entity);    => bu noktada dikkat edin bu alanda business logic olarak kendiniz özel Id'nizi yukarıdaki gibi bulmaya calısmayıp direkt maplemeye calısırsanız hata alırsınız...
             await _repository.DeleteAsync(originalValue);
             return $"Silme işlemi basarıyla gerçekleştirildi...Silinen id : {entity.Id}";
         }
